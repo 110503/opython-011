@@ -112,8 +112,8 @@ class Main:
         myplayername=OpenHoldem.getScrape("p0name")                             #011    
         print(f'Scraped Chair 0 name={myplayername}\n')                         #011
         myplayername=OpenHoldem.getScrape("p1name")                             #011
-        print(f'Scraped Chair 0 name={myplayername}\n')                         #011
+        print(f'Scraped Chair 1 name={myplayername}\n')                         #011
         myplayername=OpenHoldem.getScrape("p2name")                             #011
-        print(f'Scraped Chair 0 name={myplayername}\n')                         #011
+        print(f'Scraped Chair 2 name={myplayername}\n')                         #011
 
         return decision
