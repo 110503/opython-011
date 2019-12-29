@@ -13,6 +13,7 @@
 #include <iostream>
 #include <conio.h>
 #include "OpenHoldemFunctions.h"
+#include <string>																							// 011
 
 PyObject *pName = nullptr, *pModule = nullptr, *pDict = nullptr, *pClass = nullptr, *pInstance = nullptr;
 
@@ -28,6 +29,42 @@ static PyObject* getSymbol(PyObject *self, PyObject *args) {
 	//WriteLog("Python Addon - getSymbol %s: %f\n", symbol, res);
 	return Py_BuildValue("d", res);
 }
+
+//011 code
+static PyObject* getPlayerName(PyObject *self, PyObject *args) {
+// This function should be recoded to accept an integer instead of a string
+	char *thechairstr;
+	if (!PyArg_ParseTuple(args, "s", &thechairstr)) {
+		WriteLog("Python Addon - could not parse getPLayerName arg");
+		return NULL;
+	}
+	try
+	{
+		int thechair = std::stoi(thechairstr);
+		std::cout << thechair << '\n';
+		char *res = GetPlayerName(thechair);
+		//WriteLog("Python Addon - getSymbol %s: %f\n", symbol, res);
+		return Py_BuildValue("s", res);																		// 011 return a string
+	}
+	catch (const std::invalid_argument& ia) 
+	{
+		std::cerr << "Bad input. Invalid argument: " << ia.what() << '\n';
+	}
+	return NULL;
+}
+
+static PyObject* getScrape(PyObject *self, PyObject *args) {
+	char *region;
+	if (!PyArg_ParseTuple(args, "s", &region)) {
+		WriteLog("Python Addon - could not parse getScrape arg");
+		return NULL;
+	}
+
+	int thelength = 0;
+	char *res = ScrapeTableMapRegion(region, thelength);
+	return Py_BuildValue("s", res);																			// 011 return a string
+}
+//011 code
 
 PyObject* redirectStdout(PyObject* self, PyObject* pArgs) {
 
@@ -69,6 +106,8 @@ static PyObject* error_out(PyObject *m) {
 
 static PyMethodDef openholdem_methods[] = {
 	{ "getSymbol", (PyCFunction)getSymbol, METH_VARARGS, "Get OpenHoldem symbol" },
+	{ "getScrape", (PyCFunction)getScrape, METH_VARARGS, "Get OpenHoldem scrape" },							// 011
+	{ "getPlayerName", (PyCFunction)getPlayerName, METH_VARARGS, "Get OpenHoldem PlayerName" },				// 011
 	{ "_stdout", redirectStdout, METH_VARARGS, "Captures stdout" },
 	{ "_stderr", redirectStderr, METH_VARARGS, "Captures stderr" },
 	{ NULL, NULL, 0, NULL }
@@ -134,7 +173,7 @@ int pyInit() {
 		"sys.stderr = StderrCatcher()\n"
 	);
 
-	pName = PyUnicode_FromString("bot");
+	pName = PyUnicode_FromString("PyBot");																	// 011
 	pModule = PyImport_Import(pName);
 	Py_XDECREF(pName);
 
