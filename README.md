@@ -18,8 +18,8 @@ OpenHoldem opython user dll add-on
 
 ## To Run
 
-1. Move user.dll, python.ohf and PyBot.py to Openholdem directory
-2. Load python.ohf in oh
+1. Copy user.dll, PyBot.ohf and PyBot.py to OpenHoldem directory
+2. Load PyBot.ohf in OpenHoldem
 3. Run :)
 
 ```
